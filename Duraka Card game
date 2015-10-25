@@ -1,0 +1,313 @@
+# -*- coding: 'Utf-8'  -*-
+import random
+
+
+lst_Kart_v_colodi=["шість черва", "шість бубна", "шість хреста", "шість піка", "сім черва", "сім бубна", "сім хреста", "сім піка", "вісім черва", "вісім бубна", "вісім хреста", "вісім піка", "дев'ять черва", "дев'ять бубна", "дев'ять хреста", "дев'ять піка", "десять черва", "десять бубна", "десять хреста", "десять піка", "валет черва", "валет бубна", "валет хреста", "валет піка", "дама черва", "дама бубна", "дама хреста", "дама піка", "король черва", "король бубна", "король хреста", "король піка", "туз черва", "туз бубна", "туз хреста", "туз піка"]
+lst_Karty_tvoi=[]
+lst_Karty_supernyka=[]
+lst_Kozuryv=[]
+naybilshuy_tviy_Kozer=None
+naybilshuy_Kozer_supernyka=None
+lst_prioritetiv=[]
+lst_Stil=[]
+vidbiy=[]
+stil=[]
+beru=None
+count=0
+l=0
+def prior_hodu():
+    f=zag_prior(lst_Karty_supernyka,lst_Karty_tvoi)
+    L=sorted(f.items(), key=lambda(k,v): v)
+    t=(map(lambda (k,v): k, L))
+    t.reverse()
+    return t
+def chance_pidkinuty(lst_kart_scho_hodyt,lst_kart_shco_bje, lst_kolody):
+    b=[]
+    dict_shansyv={}
+    for i in lst_kart_scho_hodyt:
+        a=i.split(' ')
+        b.extend(a)
+    #print b
+    for i in lst_kart_scho_hodyt:
+        a=i.split(' ')
+        virog=float((100*(1+b.count(a[0])))/(len(lst_kart_shco_bje)+len(lst_kolody)))
+        #print i
+        #print b.count(a[0])
+        dict_shansyv[i]=virog
+    return dict_shansyv
+def chance_ne_otrymaty_girshu_kartu(lst_kart_scho_hodyt):
+    dict_chans_vzuaty_bilshu_cartu={}
+    
+    #lst_cherva=[i for i in lst_Kart_v_colodi if i.split(' ')[1]=='черва']
+    #lst_bubna=[i for i in lst_Kart_v_colodi if i.split(' ')[1]=='бубна']
+    #lst_hresta=[i for i in lst_Kart_v_colodi if i.split(' ')[1]=='хреста']
+    #lst_pika=[i for i in lst_Kart_v_colodi if i.split(' ')[1]=='піка']
+    #for i in lst_cherva+lst_bubna+lst_hresta+ lst_pika:
+        #print i
+    for j in lst_kart_scho_hodyt:
+        dict_chans_vzuaty_bilshu_cartu[j]=100/(((len([i for i in lst_Kart_v_colodi if i.split(' ')[1]==j.split(' ')[1]])-len([i for i in lst_kart_scho_hodyt if i.split(' ')[1]==j.split(' ')[1]]))+(len([i for i in lst_Kart_v_colodi if i.split(' ')[1]==Kozyr.split(' ')[1]])-len([i for i in lst_kart_scho_hodyt if i.split(' ')[1]==Kozyr.split(' ')[1]])))/(len([i for i in lst_Kart_v_colodi if i.split(' ')[1]==Kozyr.split(' ')[1]])-([i for i in lst_Kart_v_colodi if i.split(' ')[1]==j.split(' ')[1]]+[i for i in lst_Kart_v_colodi if i.split(' ')[1]==Kozyr.split(' ')[1]]).index(j)))
+    #for i, j in dict_chans_vzuaty_bilshu_cartu.iteritems():
+        #print i, j
+
+    return  dict_chans_vzuaty_bilshu_cartu
+def chance_ne_pobyty(lst_kart_scho_hodyt,lst_kart_shco_bje, lst_kolody):
+    dict_chans_vzuaty_bilshu_cartu={}
+    for j in lst_kart_scho_hodyt:
+        #print j
+        sum_kart_na_rukah_odnogo_rangu_shco_bje=len([i for i in lst_kart_shco_bje if i.split(' ')[0]==j.split(' ')[0]])
+        #print  sum_kart_na_rukah_odnogo_rangu_shco_bje
+        sum_kart_na_rukah_odnogo_rangu_scho_hodyt=len([i for i in lst_kart_scho_hodyt if i.split(' ')[0]==j.split(' ')[0]])
+        #print sum_kart_na_rukah_odnogo_rangu_scho_hodyt
+        sum_kart_odnogo_rangu=len([i for i in lst_kolody if i.split(' ')[0]==j.split(' ')[0]]) + sum_kart_na_rukah_odnogo_rangu_scho_hodyt + sum_kart_na_rukah_odnogo_rangu_shco_bje
+        #print sum_kart_odnogo_rangu
+        sum_kart_kozyryv_na_rukah_shco_bje=len([i for i in lst_kart_shco_bje if i.split(' ')[1]==Kozyr.split(' ')[1]])
+        #print sum_kart_kozyryv_na_rukah_shco_bje
+        sum_kart_kozyryv_na_rukah_scho_hodyt=len([i for i in lst_kart_scho_hodyt  if i.split(' ')[1]==Kozyr.split(' ')[1]])
+        #print sum_kart_kozyryv_na_rukah_scho_hodyt
+        sum_kart_kozyryv=len([i for i in lst_kolody if i.split(' ')[1]==Kozyr.split(' ')[1]])+sum_kart_kozyryv_na_rukah_scho_hodyt+sum_kart_kozyryv_na_rukah_shco_bje
+        #print sum_kart_kozyryv
+        sum_vsih_kart=len(lst_Kart_v_colodi)+len(lst_kart_scho_hodyt)
+        #print sum_vsih_kart
+        dict_chans_vzuaty_bilshu_cartu[j]=float((((100*sum_kart_na_rukah_odnogo_rangu_scho_hodyt/sum_kart_na_rukah_odnogo_rangu_scho_hodyt)+(100*sum_kart_kozyryv_na_rukah_scho_hodyt/sum_kart_kozyryv)))/(sum_vsih_kart))
+        #for i,j in dict_chans_vzuaty_bilshu_cartu.iteritems():
+            #print i,j 
+    return dict_chans_vzuaty_bilshu_cartu
+def zag_prior(lst1,lst2):
+    """lst1-spisok kart dlya viznachennya prioritetu, lst2-spisok kart supenyka(tobto moi)"""
+    prioritet_kart={}
+    for i in chance_pidkinuty(lst1, lst2, lst_coloda_peremishana).iterkeys(): 
+         prioritet_kart[i]=chance_pidkinuty(lst1, lst2, lst_coloda_peremishana)[i]+chance_ne_otrymaty_girshu_kartu(lst1)[i]+chance_ne_pobyty(lst1, lst2, lst_coloda_peremishana)[i]
+    #for i,j in prioritet_kart.iteritems():
+        #print i,j
+    return prioritet_kart
+def Pidbir_karty_pob(Karta_,lst_gravza):
+    ryad_masti_ta_kozyr=[i for i in lst_Kart_v_colodi if i.split(' ')[1]==Karta_.split(' ')[1]]+[i for i in lst_Kart_v_colodi if i.split(' ')[1]==Kozyr.split(' ')[1]]#Створює ряд рангів тої масті що і карта якою походили до компютера+ всі ранги козирної масті(для подальшого порівняння)
+    lst_masty_karty_na_rukah=[i for i in lst_gravza if i.split(' ')[1]==Karta_.split(' ')[1]]#список рангів карт такої же масті що і карта якою походили до компа 
+    karty_scho_bje=[i for i in lst_masty_karty_na_rukah if  ryad_masti_ta_kozyr.index(i)> ryad_masti_ta_kozyr.index(Karta_)]
+    if len(karty_scho_bje)==0:
+        return [None]
+    else:
+        return karty_scho_bje
+def perevirka(Karta1,#-карта якою походили
+              Karta2 #-карта якою бються  
+              ):
+    """Karta1-karta yakoyou pohodyly, Karta2-karta yakoyou byoutsa
+    """
+    ryad_masti_ta_kozyr=[i for i in lst_Kart_v_colodi if i.split(' ')[1]==Karta1.split(' ')[1]]+[i for i in lst_Kart_v_colodi if i.split(' ')[1]==Kozyr.split(' ')[1]]
+    if Karta2 in ryad_masti_ta_kozyr:
+        return ryad_masti_ta_kozyr.index(Karta2)>ryad_masti_ta_kozyr.index(Karta1)
+    else:
+        return False
+def perevirka_NA_pidkidannya(lst,stil_):#перевіряє та підкидає карту навіть якщо це козер
+    """lst-spisok kart gravca scho pidkudaye"""
+    vidpovid=[]
+    for i in stil_:
+        for j in lst:
+            if i.split(' ')[0]==j.split(' ')[0]:
+                vidpovid.append(j)
+    if len(vidpovid)>0:
+        #return True
+        return vidpovid
+    else:
+        #return False
+        return vidpovid
+def vubir_Karty_gravec():
+    vubir=input('Виберіть карту:')-1
+    if vubir in range(len(lst_Karty_tvoi)+1):
+        if vubir in range(len(lst_Karty_tvoi))and perevirka(Karta_comp,lst_Karty_tvoi[vubir])==True:
+            Karta=lst_Karty_tvoi[vubir]
+            return Karta
+        elif vubir==(len(lst_Karty_tvoi)):
+            return False
+        else:
+            print "Ця карта не б'є карту супротивника"
+            return vubir_Karty_gravec()
+    elif vubir not in range(len(lst_Karty_tvoi)) :
+        print 'Введене значення не є в списку варіантів, повторіть вибір'
+        return vubir_Karty_gravec()
+
+#print 'Тасування карт...'
+lst_coloda_peremishana=lst_Kart_v_colodi
+random.shuffle(lst_coloda_peremishana)
+ 
+#print 'Роздача карт:'
+#print 'Ваші карти'
+for i in lst_coloda_peremishana[0:12:2]:
+    lst_Karty_tvoi.append(lst_coloda_peremishana.pop(lst_coloda_peremishana.index(i)))   
+#print 'СУПЕРНИКА!'
+for i in lst_coloda_peremishana[1:13:2]:
+    lst_Karty_supernyka.append(lst_coloda_peremishana.pop(lst_coloda_peremishana.index(i)))
+    #print i
+#print 'Остаток!%s' %(len(lst_coloda_peremishana))
+#for i in lst_coloda_peremishana:
+    #print i    
+lst_Kart_v_colodi=["шість черва", "шість бубна", "шість хреста", "шість піка", "сім черва", "сім бубна", "сім хреста", "сім піка", "вісім черва", "вісім бубна", "вісім хреста", "вісім піка", "дев'ять черва", "дев'ять бубна", "дев'ять хреста", "дев'ять піка", "десять черва", "десять бубна", "десять хреста", "десять піка", "валет черва", "валет бубна", "валет хреста", "валет піка", "дама черва", "дама бубна", "дама хреста", "дама піка", "король черва", "король бубна", "король хреста", "король піка", "туз черва", "туз бубна", "туз хреста", "туз піка"] # перепризначив бо шафл в рандомі міняє безпосередньо ліст
+                                       #"""Бере козер і ставить його в кінець колоди"""
+print 'КОЗИР %s' %(lst_coloda_peremishana[0])
+Kozyr=lst_coloda_peremishana[0]
+lst_coloda_peremishana.append(lst_coloda_peremishana.pop(0))
+for i in lst_Kart_v_colodi:
+    Karta_z_colody=i.split(' ')
+    Karta_Kozyr=Kozyr.split(' ')
+    if Karta_z_colody[1]==Karta_Kozyr[1]:
+        lst_Kozuryv.append(i)#створення списка козирів, для подальших операцій порівняння
+#for i in lst_Kozuryv:
+    #print i
+#for i in lst_prioritetiv:
+    #print i
+
+                                            #"""Цикл гри"""
+while ((len(lst_coloda_peremishana)!=0  or len(lst_Karty_tvoi)!=0)) and ((len(lst_coloda_peremishana)!=0 or len(lst_Karty_supernyka)!=0)):
+    print 'Кількість карт у відбої %s' %len(vidbiy)
+    if len(lst_coloda_peremishana)==24 and len(vidbiy)==0 and len(stil)==0 and len(lst_Karty_tvoi)==6 and len(lst_Karty_supernyka)==6:# Якщо в перемішаній колоді є 24 карти то перевірити в кого найменший козер на руках, та поміняти флаг гравця.
+        #"""Визначення в кого більший козир"""
+        for t in lst_Karty_tvoi :
+            for y in lst_Karty_supernyka:
+                if t in lst_Kozuryv and lst_Kozuryv.index(t)>naybilshuy_tviy_Kozer:
+                    naybilshuy_tviy_Kozer=lst_Kozuryv.index(t)
+                else:
+                    naybilshuy_tviy_Kozer=-1
+                
+                if y in lst_Kozuryv and lst_Kozuryv.index(y)>naybilshuy_Kozer_supernyka:
+                        naybilshuy_Kozer_supernyka=lst_Kozuryv.index(y)
+                else:
+                    naybilshuy_Kozer_supernyka=-1
+                        #"""Зміна флагу гравця, тобто вибір того хто буде ходити перший"""
+        if naybilshuy_tviy_Kozer>naybilshuy_Kozer_supernyka: #Якщо у тебе козир більший то ти ходиш перший(flag_gravca=0)
+            flag_gravca=0
+                
+        elif naybilshuy_tviy_Kozer<naybilshuy_Kozer_supernyka:#Якщо у тебе козир менший то ходить суперник(flag_gravca=1)
+            flag_gravca=1
+        else:
+            flag_gravca=0#інше, ходиш ти , бо, чорт забирай, ти написав як тасувати ту колоду (flag_gravca=0)
+                
+                                           #"""Твій хід"""
+                            #"""Флаг гравця міняється тільки тоді коли відбій"""
+                            
+    if flag_gravca==0:
+        #"""тут гравці беруть карти"""
+        if len(lst_Karty_tvoi)<6 and len(stil)==0:
+            for i in lst_coloda_peremishana[:(6-len(lst_Karty_tvoi))]:
+                lst_Karty_tvoi.append(lst_coloda_peremishana.pop(lst_coloda_peremishana.index(i)))
+            print 'Ви взяли з колоди карти'
+        if len(lst_Karty_supernyka)<6 and len(stil)==0:
+            for i in lst_coloda_peremishana[:(6-len(lst_Karty_supernyka))]:
+                lst_Karty_supernyka.append(lst_coloda_peremishana.pop(lst_coloda_peremishana.index(i)))
+            
+        print 'Ваш хід'
+            
+        while True:#цикл вибору
+            for i in lst_Karty_tvoi:
+                print_=str(lst_Karty_tvoi.index(i)+1)+')'+str(i)
+                print print_
+            print '%i)Відбій' %(len(lst_Karty_tvoi)+1)
+            vubir=input('Вибери карту:')-1
+            if vubir == (len(lst_Karty_tvoi)):
+                print 'Ви:відбій'
+                vidbiy.extend(stil)
+                stil=[]
+                flag_gravca=abs(flag_gravca-1)
+                break
+            if len(stil)==0 and vubir != (len(lst_Karty_tvoi)):
+                Karta=lst_Karty_tvoi[vubir]
+                print 'Ви походили:%s' %Karta
+                if vubir in range(0,len(lst_Karty_tvoi)):
+                    stil.append(lst_Karty_tvoi.pop(lst_Karty_tvoi.index(Karta)))#кидає на стіл карту з рук
+                    karta_scho_bje=Pidbir_karty_pob(Karta,lst_Karty_supernyka)[0]#Суперник визначив список карт якими може побитись. Ці карти впорядковані по пріорітету. Пріорітет розраховується функціями розрахунку вірогідностей.
+                    if type(karta_scho_bje)==str:# Якщо список карт, якими можна побити, не пустий тоді:
+                        stil.append(lst_Karty_supernyka.pop(lst_Karty_supernyka.index(karta_scho_bje)))  #бється компютер
+                        print "Суперник б'ється: %s" %karta_scho_bje #Виводить на екран тим чим бється компютер
+                    else:
+                        print 'Суперник: Беру'
+                        lst_Karty_supernyka.extend(stil)
+                        stil=[]
+                        break
+            elif lst_Karty_tvoi[vubir] in perevirka_NA_pidkidannya(lst_Karty_tvoi,stil) and len(stil)>0 and vubir != (len(lst_Karty_tvoi)):
+                Karta=lst_Karty_tvoi[vubir]
+                print 'Ви підкинули:%s' %Karta
+                if vubir in range(0,len(lst_Karty_tvoi)):
+                    stil.append(lst_Karty_tvoi.pop(lst_Karty_tvoi.index(Karta)))#кидає на стіл карту з рук
+                    karta_scho_bje=Pidbir_karty_pob(Karta,lst_Karty_supernyka)[0]#Суперник визначив список карт якими може побитись. Ці карти впорядковані по пріорітету. Пріорітет розраховується функціями розрахунку вірогідностей.
+                    if type(karta_scho_bje)==str:# Якщо список карт, якими можна побити, не пустий тоді:
+                        stil.append(lst_Karty_supernyka.pop(lst_Karty_supernyka.index(karta_scho_bje)))  #бється компютер
+                        print "Суперник б'ється: %s" %karta_scho_bje #Виводить на екран тим чим бється компютер
+                    else:
+                        print 'Суперник: Беру'
+                        lst_Karty_supernyka.extend(stil)
+                        stil=[]
+                        break
+            else :
+                print 'Ви не можите підкинути цю карту'
+                break
+            
+                                        #"""Хід суперника"""     
+    elif flag_gravca==1:
+                                   #"""тут гравці беруть карти"""
+        if len(lst_Karty_supernyka)<6 and len(stil)==0:
+            for i in lst_coloda_peremishana[:(6-len(lst_Karty_supernyka))]:
+                lst_Karty_supernyka.append(lst_coloda_peremishana.pop(lst_coloda_peremishana.index(i)))
+        if len(lst_Karty_tvoi)<6 and len(stil)==0:
+            for i in lst_coloda_peremishana[:(6-len(lst_Karty_tvoi))]:
+                lst_Karty_tvoi.append(lst_coloda_peremishana.pop(lst_coloda_peremishana.index(i)))
+            print 'Ви: взяли з колоди карти'
+           
+            
+           
+            
+        if len(perevirka_NA_pidkidannya(lst_Karty_supernyka,stil))>0:
+            Karta_comp=perevirka_NA_pidkidannya(lst_Karty_supernyka,stil)[0]
+            stil.append(lst_Karty_supernyka.pop(lst_Karty_supernyka.index(Karta_comp)))
+            print Karta_comp
+            print 'Суперник підкинув:%s' %Karta_comp
+            
+        else:
+            print "Хід суперника"
+            Karta_comp=prior_hodu()[0]
+            stil.append(lst_Karty_supernyka.pop(lst_Karty_supernyka.index(Karta_comp)))
+            print 'Суперник ходить:%s' %Karta_comp
+                
+                                        #"""Захист""" 
+                           
+        print "Побийте його карту"
+        for i in lst_Karty_tvoi:
+            print_=str((lst_Karty_tvoi.index(i))+1)+')'+str(i)
+            print print_
+        print '%i)Беру' %(len(lst_Karty_tvoi)+1)
+        Karta=vubir_Karty_gravec()
+        if  type(Karta)==str:
+            stil.append(lst_Karty_tvoi.pop(lst_Karty_tvoi.index(Karta)))
+            print 'Ви походили:%s' %Karta
+        elif Karta==False:
+            lst_Karty_tvoi.extend(stil)
+            stil=[]
+            print 'Ви: Беру'
+        if len(perevirka_NA_pidkidannya(lst_Karty_supernyka,stil))==0 and len(stil)!=0:
+            print 'Суперник: Відбій'
+            vidbiy.extend(stil)
+            stil=[]
+            flag_gravca=abs(flag_gravca-1)
+                
+                
+if len(lst_Karty_tvoi)==0 and len(lst_Karty_supernyka)!=0:
+    print "Вітаю ви виграли! Ваш суперник дурак"
+elif len(lst_Karty_tvoi)!=0 and len(lst_Karty_supernyka)==0:
+    print "Ви дурак!"
+elif len(lst_Karty_tvoi)==0 and len(lst_Karty_supernyka)==0:
+    print "Нічия!"
+else:
+    print "Творець гри, ти дебіл, не вмієш кодити, іди копай і вагони розгружай"
+    
+                       
+            
+            
+                        
+   
+    
+    
+    
+
+#print chance_pidkinuty(lst_Karty_tvoi, lst_Karty_supernyka, lst_coloda_peremishana)
+#print chance_ne_otrymaty_girshu_kartu(lst_Karty_tvoi)
+#print chance_ne_pobyty(lst_Karty_tvoi,lst_Karty_supernyka, lst_coloda_peremishana)
+#for i in prior_hodu():
+    #print i
